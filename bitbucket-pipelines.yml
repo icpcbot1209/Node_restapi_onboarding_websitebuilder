@@ -1,0 +1,64 @@
+image: node:10.15.3
+
+pipelines:
+  default:
+    - step:
+        name: "Buid and Test"
+        caches:
+          - node
+        script: 
+          - npm install
+          - npm test
+  branches:
+    master:
+      - step:
+          name: "Build and Test"
+          caches:
+            - node
+          script:
+            - npm install
+            - npm test
+      - step:
+          name: "Deploy to Test Environment"
+          caches:
+            - node
+          deployment: test
+          script:
+            - apt-get update && apt-get install -y python-dev
+            - curl -O https://bootstrap.pypa.io/get-pip.py
+            - python get-pip.py
+            - pip install awsebcli --upgrade
+            - eb init jamfeed-node-api -r us-east-1 -p Node.js
+            - eb deploy jamfeed-api-test -l "jamfeed-node-api-$BITBUCKET_BRANCH-$BITBUCKET_COMMIT"
+      - step:
+          name: "Deploy to Production Environment"
+          caches:
+            - node
+          deployment: production
+          script:
+            - apt-get update && apt-get install -y python-dev
+            - curl -O https://bootstrap.pypa.io/get-pip.py
+            - python get-pip.py
+            - pip install awsebcli --upgrade
+            - eb init jamfeed-node-api -r us-east-1 -p Node.js
+            - eb deploy jamfeed-api-prod -l "jamfeed-node-api-$BITBUCKET_BRANCH-$BITBUCKET_COMMIT"
+    feature-*:
+      - step:
+          name: "Build and Test"
+          caches:
+            - node
+          script:
+            - npm install
+            - npm test
+      - step:
+          name: "Deploy to Test Environment"
+          caches:
+            - node
+          deployment: test
+          script:
+            - apt-get update && apt-get install -y python-dev
+            - curl -O https://bootstrap.pypa.io/get-pip.py
+            - python get-pip.py
+            - pip install awsebcli --upgrade
+            - eb init jamfeed-node-api -r us-east-1 -p Node.js
+            - eb deploy jamfeed-api-test -l "jamfeed-node-api-$BITBUCKET_BRANCH-$BITBUCKET_COMMIT"

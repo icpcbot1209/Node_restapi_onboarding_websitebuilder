@@ -1,0 +1,18 @@
+{
+    "extends": "airbnb-base",
+    "plugins": [
+        "import"
+    ],
+    "rules": {
+        "no-console": "off",
+        "arrow-parens": [
+            "error",
+            "always"
+        ],
+        "indent": ["error", 4],
+        "max-len": ["error", { "code": 120, "comments": 200, "ignoreStrings": true }]
+    },
+    "env": {
+        "jest": true
+    }
+}
