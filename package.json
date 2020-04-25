@@ -75,7 +75,7 @@
     "replace-in-file": "^5.0.2",
     "request": "^2.88.0",
     "request-country": "^0.1.5",
-    "sequelize": "^4.44.4",
+    "sequelize": "^5.15.1",
     "simple-git": "^1.129.0",
     "songkick-api-node": "^1.0.4",
     "spotify-web-api-node": "^4.0.0",
